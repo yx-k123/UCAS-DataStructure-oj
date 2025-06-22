@@ -253,7 +253,6 @@ void delete(TrieTree *root, KeysType key) {
 void print_trie_helper(TrieNode *node, char *prefix, int depth, int is_last) {
     if (node == NULL) return;
     
-    // 打印缩进和连接线
     for (int i = 0; i < depth - 1; i++) {
         printf("    ");
     }
@@ -266,7 +265,6 @@ void print_trie_helper(TrieNode *node, char *prefix, int depth, int is_last) {
     } else if (node->kind == BRANCH) {
         printf("[BRANCH] (children: %d)\n", node->bh.num);
         
-        // 统计非空子节点数量，用于判断是否是最后一个
         int non_null_count = 0;
         for (int i = 0; i < 27; i++) {
             if (node->bh.ptr[i] != NULL) {
@@ -278,9 +276,8 @@ void print_trie_helper(TrieNode *node, char *prefix, int depth, int is_last) {
         for (int i = 0; i < 27; i++) {
             if (node->bh.ptr[i] != NULL) {
                 current_count++;
-                char child_char = (i == 0) ? '$' : ('a' + i - 1);  // 0索引用$表示字符串结束
+                char child_char = (i == 0) ? '$' : ('a' + i - 1);  
                 
-                // 打印子节点标识
                 for (int j = 0; j < depth; j++) {
                     printf("    ");
                 }
@@ -304,7 +301,6 @@ void print_trie(TrieTree *root) {
     printf("===========================\n\n");
 }
 
-// 简化版本的打印函数
 void print_trie_simple(TrieTree *root) {
     printf("\n=== Trie Tree (Simple) ===\n");
     if (*root == NULL) {
@@ -337,7 +333,6 @@ void print_trie_simple_helper(TrieNode *node, char *path, int depth) {
     }
 }
 
-// 遍历所有键的函数
 void traverse_all_keys(TrieTree *root) {
     printf("\n=== All Keys in Trie ===\n");
     if (*root == NULL) {
@@ -356,13 +351,11 @@ void traverse_keys_helper(TrieNode *node, char *path, int depth) {
     if (node->kind == LEAF) {
         printf("Key: \"%s\", Value: %d\n", node->lf.K, node->lf.infoptr->value);
     } else if (node->kind == BRANCH) {
-        // 检查位置0是否有叶子节点（表示字符串结束）
         if (node->bh.ptr[0] != NULL && node->bh.ptr[0]->kind == LEAF) {
             printf("Key: \"%s\", Value: %d\n", 
                    node->bh.ptr[0]->lf.K, node->bh.ptr[0]->lf.infoptr->value);
         }
-        
-        // 递归遍历其他子节点
+
         for (int i = 1; i < 27; i++) {
             if (node->bh.ptr[i] != NULL) {
                 path[depth] = 'a' + i - 1;
